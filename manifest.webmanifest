@@ -1,0 +1,19 @@
+{
+  "name": "Dexfolio — Pokémon Collector",
+  "short_name": "Dexfolio",
+  "description": "Pokédex and Pokémon TCG collection tracker",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#101522",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "icons/pokeball.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
