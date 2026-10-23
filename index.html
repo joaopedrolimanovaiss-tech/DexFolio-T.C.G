@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101522">
+<meta name="description" content="Seu fichário digital Pokémon: Pokédex, cartas e progresso das coleções.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/pokeball.svg" type="image/svg+xml">
+<title>Dexfolio — Pokémon Collector</title>
+<style>
+:root{--bg:#0b1020;--panel:#131b2e;--panel2:#1a2540;--text:#f5f7ff;--muted:#9eabc7;--line:#283552;--accent:#8b9cff;--green:#52d6a0;--red:#ff6f83;--yellow:#ffcf70}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#172342 0%,var(--bg) 55%);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:1120px;margin:auto;padding:20px 18px 100px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}.brand{display:flex;gap:12px;align-items:center}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#ff6378,#ffb45f);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 24px #ff637833}.brand h1{font-size:20px;letter-spacing:-.5px;margin:0}.brand p{color:var(--muted);margin:1px 0 0;font-size:12px}.top-actions{display:flex;gap:8px}.ghost,.primary,.tab{border-radius:12px;padding:10px 13px;color:var(--text);background:var(--panel2);border:1px solid var(--line)}.primary{background:var(--accent);color:#101522;font-weight:750;border:0}.hero{padding:24px;border:1px solid #354365;border-radius:24px;background:linear-gradient(120deg,#242f56,#151d33 68%);display:flex;justify-content:space-between;gap:16px;overflow:hidden;position:relative}.hero:after{content:"◉";position:absolute;right:12px;top:-60px;font-size:240px;color:#ffffff08}.eyebrow{color:#aab6ff;text-transform:uppercase;letter-spacing:1.6px;font-size:11px;font-weight:800}.hero h2{font-size:clamp(24px,4vw,38px);line-height:1.1;margin:9px 0}.hero p{max-width:470px;color:#c0c9df;margin:0}.hero .pill{align-self:flex-end;white-space:nowrap;background:#0e1425aa;border:1px solid #45527a;border-radius:14px;padding:12px 14px;z-index:1}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 24px}.stat,.panel{background:#11192bde;border:1px solid var(--line);border-radius:18px;padding:16px}.stat span{color:var(--muted);font-size:12px}.stat strong{display:block;font-size:26px;margin-top:5px;letter-spacing:-.7px}.stat small{color:var(--green)}.nav{display:flex;gap:8px;overflow:auto;padding-bottom:5px;margin-bottom:16px}.tab{white-space:nowrap;color:var(--muted)}.tab.active{background:#dfe4ff;color:#171d31;border-color:#dfe4ff;font-weight:800}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:18px 0 12px}.section-head h2{font-size:20px;margin:0}.section-head p{margin:3px 0 0;color:var(--muted);font-size:13px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.field{background:#0b1221;border:1px solid var(--line);color:var(--text);border-radius:11px;padding:11px 12px;min-width:0}.search{flex:1;min-width:170px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.pokemon,.set-card,.card-row{border:1px solid var(--line);background:linear-gradient(160deg,#19243b,#101727);border-radius:16px;padding:13px;min-width:0}.pokemon{position:relative;overflow:hidden}.poke-art{height:104px;border-radius:12px;display:grid;place-items:center;background:radial-gradient(circle,#2b3d62,#17223b 68%);margin-bottom:11px}
+.poke-art img{width:88px;height:88px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 5px 7px #0005)}
+.set-logo{height:90px;border-radius:12px;background:linear-gradient(135deg,#28385e,#1a2540);display:flex;align-items:center;justify-content:center;padding:10px;margin-bottom:12px;position:relative;overflow:hidden}
+.set-logo img{max-width:100%;max-height:70px;object-fit:contain;z-index:1}
+.set-logo span{display:none}.set-logo.logo-fallback img{display:none!important}.set-logo.logo-fallback span{display:block;color:#e8ecff;font-weight:800;text-align:center;font-size:18px}
+.set-monogram{font-size:26px;letter-spacing:2px;font-weight:900;color:#dbe2ff}
+.card-glyph{font-size:13px;font-weight:900;letter-spacing:1px;color:#dbe2ff;border:2px solid #8b9cff;border-radius:7px;padding:6px;transform:rotate(-6deg)}.poke-num{font-size:11px;color:var(--muted);font-weight:750}.pokemon h3,.set-card h3{margin:3px 0 8px;font-size:15px}.types{display:flex;gap:5px;flex-wrap:wrap}.type{font-size:10px;padding:3px 7px;border-radius:7px;background:#293653;color:#d5ddf4}.mini-btn{width:100%;margin-top:11px;border:1px solid var(--line);background:#202c47;color:var(--text);border-radius:9px;padding:8px;font-size:12px;font-weight:700}.mini-btn.owned{background:#153a35;border-color:#286a5a;color:#7ce4bd}.progress{height:7px;border-radius:99px;background:#27314a;overflow:hidden;margin:10px 0}.progress i{display:block;height:100%;background:linear-gradient(90deg,#8294ff,#5ed9b0);border-radius:99px}.set-card{padding:17px}.set-open{cursor:pointer}.set-open:focus{outline:2px solid #8294ff}.set-category{margin:14px 0}.category-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 17px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(120deg,#202d4d,#131c30);color:var(--text);font-weight:800;text-align:left;font-size:17px}.category-brand{display:flex;align-items:center;gap:14px;min-width:0}.category-brand img{width:66px;height:42px;object-fit:contain}.category-arrow{font-size:24px;color:#bfc9ff}.category-sets{padding-top:12px}.tcg-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.tcg-card{display:flex;flex-direction:column;padding:10px}.tcg-card .poke-art{height:auto!important;min-height:0!important;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;margin-bottom:8px}.tcg-card .poke-art img{width:100%!important;height:100%!important;max-width:none!important;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 4px 8px #0006)}.tcg-card h3{font-size:13px;line-height:1.25}.tcg-card .type{font-size:10px}.tcg-card .mini-btn{padding:8px 3px;font-size:11px}.tcg-card .mini-btn{margin-top:auto}.set-icon{height:90px;border-radius:12px;background:linear-gradient(135deg,#28385e,#1a2540);display:grid;place-items:center;font-size:37px;margin-bottom:12px}.set-card p{color:var(--muted);font-size:12px;margin:0}.set-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.collection-list{display:grid;gap:9px}.card-row{display:flex;align-items:center;gap:12px;padding:11px}.card-thumb{width:54px;height:72px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(135deg,#344b7c,#18233e);font-size:27px;flex-shrink:0}.card-info{flex:1;min-width:0}.card-info h3{font-size:14px;margin:0 0 3px}.card-info p{font-size:12px;color:var(--muted);margin:0}.qty{display:flex;align-items:center;gap:7px}.qty button{width:28px;height:28px;border-radius:8px;background:#273653;color:white}.qty b{min-width:16px;text-align:center}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #34405d;border-radius:15px}.hidden{display:none!important}.modal-bg{position:fixed;inset:0;background:#050814bb;display:grid;place-items:center;padding:18px;z-index:5}.modal{width:min(440px,100%);background:#151e32;border:1px solid #3b496b;border-radius:20px;padding:20px}.modal h2{margin:0 0 16px}.modal form{display:grid;gap:10px}.modal label{font-size:12px;color:var(--muted)}.modal input,.modal select{width:100%;margin-top:5px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}.bottom-note{text-align:center;color:#687797;font-size:11px;margin-top:28px}
+@media(max-width:760px){.tcg-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.tcg-card{padding:7px}.tcg-card .poke-art{aspect-ratio:2/3}.tcg-card h3{font-size:11px}.tcg-card .mini-btn{font-size:10px;padding:7px 2px}.app{padding:14px 13px 90px}.hero{padding:19px}.hero .pill{display:none}.stats{grid-template-columns:repeat(2,1fr);gap:9px}.stat{padding:13px}.stat strong{font-size:23px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.poke-art{height:95px}.brand h1{font-size:18px}.top-actions .ghost{padding:9px}.section-head{align-items:start;flex-direction:column}.filters .field{flex:1}.card-row{gap:9px}.qty{gap:4px}}
+
+.dex-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:stretch}
+.dex-grid .pokemon{padding:10px;display:flex;flex-direction:column}
+.dex-grid .poke-art{height:clamp(70px,12vw,112px);margin-bottom:7px}
+.dex-grid .poke-art img{width:clamp(58px,9vw,88px);height:clamp(58px,9vw,88px)}
+.dex-grid .pokemon h3{font-size:clamp(11px,1.5vw,15px);line-height:1.2;overflow-wrap:anywhere;margin:3px 0 6px}
+.dex-grid .mini-btn{margin-top:auto;padding:7px 3px;font-size:clamp(10px,1.2vw,12px)}
+.dex-pagination{display:flex;align-items:center;justify-content:center;gap:16px;margin:16px 0 4px}
+.dex-pagination button{min-width:44px;font-size:20px;padding:7px 13px}
+.dex-pagination button:disabled{opacity:.35;cursor:not-allowed}
+#dexPageLabel{color:var(--muted);font-size:13px;font-weight:700;min-width:100px;text-align:center}
+@media(max-width:760px){.tcg-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.tcg-card{padding:7px}.tcg-card .poke-art{aspect-ratio:2/3}.tcg-card h3{font-size:11px}.tcg-card .mini-btn{font-size:10px;padding:7px 2px}.grid.dex-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.dex-grid .pokemon{padding:7px;border-radius:12px}.dex-grid .poke-art{height:78px}.dex-grid .poke-art img{width:68px;height:68px}.dex-grid .poke-num{font-size:9px}.dex-grid .pokemon h3{font-size:11px}.dex-grid .mini-btn{font-size:10px;padding:7px 2px;margin-top:auto}}
+
+.ach-overall{height:8px;margin:12px 0 20px}.ach-category{margin:18px 0}.ach-category h3{font-size:15px;margin:0 0 10px}.ach-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.achievement{display:flex;gap:12px;align-items:flex-start;padding:13px;border:1px solid var(--line,#29334d);border-radius:14px;background:var(--panel,#141b2e);min-width:0;position:relative;overflow:hidden}.achievement.locked{opacity:.68}.achievement.secret .ach-medal{filter:grayscale(1);background:#222a40}.ach-medal{width:44px;height:44px;flex:0 0 44px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#34466e,#202b47);position:relative}.ach-medal svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;color:#dce7ff}.achievement.unlocked .ach-medal{background:linear-gradient(145deg,#ffe9a3,#b57a22);box-shadow:0 0 18px #e7b84f55}.achievement.unlocked .ach-medal svg{color:#49300a}.ach-copy{min-width:0;flex:1}.ach-copy h4{font-size:13px;margin:0 0 5px}.ach-copy p{font-size:11px;color:var(--muted);margin:0 0 8px;line-height:1.4}.ach-copy small{font-size:10px;color:var(--muted)}.ach-mini{height:5px;margin:7px 0;background:#273149;border-radius:9px;overflow:hidden}.ach-mini i{display:block;height:100%;background:#7c9cff}.ach-toast{position:fixed;z-index:1000;left:50%;bottom:24px;transform:translateX(-50%);display:flex;gap:12px;align-items:center;padding:14px 18px;border:1px solid #f3cc65;border-radius:16px;background:linear-gradient(135deg,#202a43,#111827);color:#fff;box-shadow:0 12px 40px #0009;max-width:calc(100vw - 28px);width:max-content;animation:ach-toast-in .55s cubic-bezier(.2,1.5,.4,1);overflow:visible}.ach-toast:before{content:"";position:absolute;inset:-5px;border:2px solid #f3cc65;border-radius:19px;animation:ach-ring 1.2s ease-out forwards;pointer-events:none}.ach-toast-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#ffe9a3,#b57a22);animation:ach-medal-pop .8s cubic-bezier(.2,1.7,.4,1);box-shadow:0 0 25px #f3cc6570}.ach-toast-icon svg{width:29px;height:29px;stroke:#49300a;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ach-toast strong{display:block;font-size:13px}.ach-toast small{color:#c7d0e7;font-size:11px}.ach-burst{position:absolute;inset:0;pointer-events:none}.ach-burst i{position:absolute;left:32px;top:35px;width:6px;height:6px;background:var(--spark);border-radius:1px;animation:ach-spark .9s ease-out forwards;transform:rotate(var(--rot))}.achievement.just-unlocked{animation:ach-card-unlock .9s ease-out;z-index:1;border-color:#f3cc65;box-shadow:0 0 24px #e7b84f35}.achievement.just-unlocked:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 15%,#fff9 48%,transparent 70%);transform:translateX(-120%);animation:ach-shine .9s ease-out}.achievement.just-unlocked .ach-medal{animation:ach-medal-pop .8s cubic-bezier(.2,1.7,.4,1)}@keyframes ach-toast-in{0%{opacity:0;transform:translate(-50%,35px) scale(.7)}70%{transform:translate(-50%,-5px) scale(1.04)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}@keyframes ach-ring{0%{opacity:1;transform:scale(.85)}100%{opacity:0;transform:scale(1.15)}}@keyframes ach-medal-pop{0%{transform:rotate(-25deg) scale(.2)}65%{transform:rotate(10deg) scale(1.25)}100%{transform:rotate(0) scale(1)}}@keyframes ach-spark{0%{opacity:1;transform:translate(0,0) rotate(var(--rot)) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(180deg) scale(.2)}}@keyframes ach-card-unlock{0%{transform:scale(.96)}45%{transform:scale(1.025)}100%{transform:scale(1)}}@keyframes ach-shine{to{transform:translateX(120%)}}@media(prefers-reduced-motion:reduce){.ach-toast,.ach-toast:before,.ach-toast-icon,.achievement.just-unlocked,.achievement.just-unlocked:after,.ach-burst i{animation:none!important}}@media(max-width:520px){.ach-grid{grid-template-columns:1fr}.achievement{padding:11px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+ <div class="brand"><div class="logo">◉</div><div><h1>Dexfolio</h1><p>POKÉMON COLLECTOR</p></div></div>
+ <div class="top-actions"><button class="ghost" id="langBtn" aria-label="Change language">EN</button><button class="ghost" id="exportBtn" title="Export backup">↗</button></div>
+</header>
+<section class="hero">
+ <div><div class="eyebrow" data-i18n="yourJourney">SUA COLEÇÃO, SUA JORNADA</div><h2 data-i18n="heroTitle">Sua coleção. Sua jornada Pokémon.</h2><p data-i18n="heroSub">Uma Pokédex pessoal e um fichário digital para cada carta da sua coleção.</p></div>
+ <div class="pill"><div class="eyebrow" data-i18n="completion">COMPLETION</div><strong id="overallPct">0%</strong><div class="progress" style="width:120px"><i id="overallBar" style="width:0%"></i></div></div>
+</section>
+<section class="stats">
+ <div class="stat"><span data-i18n="pokedexProgress">Pokémon registrados</span><strong id="pokedexStat">0 / 1.025</strong><small id="pokedexSmall">0%</small></div>
+ <div class="stat"><span data-i18n="uniqueCards">Cartas no fichário</span><strong id="dexCompletionStat">0%</strong><small data-i18n="inYourBinder">dos 1.025 Pokémon</small></div>
+</section>
+<nav class="nav">
+ <button class="tab active" data-tab="dex" data-i18n="tabDex">Pokédex</button>
+ <button class="tab" data-tab="sets" data-i18n="tabSets">Coleções TCG</button>
+ <button class="tab" data-tab="achievements" data-i18n="tabAchievements">Conquistas</button>
+</nav>
+<main>
+<section id="view-dex">
+ <div class="section-head"><div><h2 data-i18n="dexTitle">Pokédex Nacional</h2><p data-i18n="dexDesc">Marque os Pokémon que você já registrou.</p></div><strong id="dexCount">0 / 151</strong></div>
+ <div class="filters"><input class="field search" id="dexSearch" data-placeholder="searchPokemon" placeholder="Buscar Pokémon..."><select class="field" id="dexRegion" aria-label="Região"><option value="all" data-i18n="allRegions">Todas as regiões</option><option value="kanto">Kanto</option><option value="johto">Johto</option><option value="hoenn">Hoenn</option><option value="sinnoh">Sinnoh</option><option value="unova">Unova</option><option value="kalos">Kalos</option><option value="alola">Alola</option><option value="galar">Galar</option><option value="hisui">Hisui</option><option value="paldea">Paldea</option></select><select class="field" id="dexFilter"><option value="all" data-i18n="allPokemon">Todos</option><option value="owned" data-i18n="registered">Registrados</option><option value="missing" data-i18n="notRegistered">Não registrados</option></select></div>
+ <div class="grid dex-grid" id="dexGrid"></div>
+ <div class="dex-pagination" id="dexPagination" aria-label="Pokédex page navigation"><button class="ghost" id="dexPrev" type="button" aria-label="Previous page">←</button><span id="dexPageLabel">Page 1 of 86</span><button class="ghost" id="dexNext" type="button" aria-label="Next page">→</button></div>
+</section>
+<section id="view-sets" class="hidden">
+ <div class="section-head"><div><h2 data-i18n="setsTitle">Coleções Pokémon TCG</h2><p data-i18n="setsDesc">Acompanhe o que você tem e o que falta em cada set.</p></div></div>
+ <div class="filters"><input class="field search" id="setSearch" data-placeholder="searchSet" placeholder="Buscar coleção..."></div>
+ <div id="setCategories"></div>
+ <div id="setDetail" class="hidden"></div>
+ <div class="grid" id="setsGrid"></div>
+</section>
+<section id="view-achievements" class="hidden">
+ <div class="section-head"><div><h2 data-i18n="achTitle">Conquistas</h2><p data-i18n="achDesc">Objetivos desbloqueados automaticamente conforme sua coleção cresce.</p></div><strong id="achCount">0 / 30</strong></div>
+ <div class="progress ach-overall"><i id="achBar" style="width:0%"></i></div><div id="achievementList"></div>
+</section>
+<section id="view-binder" class="hidden">
+ <div class="section-head"><div><h2 data-i18n="binderTitle">Meu fichário</h2><p data-i18n="binderDesc">Suas cartas, quantidades e repetidas em um só lugar.</p></div><button class="primary" id="addCardBtn" data-i18n="addCard">+ Adicionar carta</button></div>
+ <div class="filters"><input class="field search" id="binderSearch" data-placeholder="searchCard" placeholder="Buscar carta..."><select class="field" id="binderFilter"><option value="all" data-i18n="allCards">Todas as cartas</option><option value="duplicates" data-i18n="duplicatesOnly">Com repetidas</option></select></div>
+ <div class="collection-list" id="binderList"></div>
+</section>
+</main>
+<div class="bottom-note">Dexfolio · Fan-made collection tracker · Pokémon is © Nintendo / Creatures / GAME FREAK</div>
+</div>
+<div id="modalRoot"></div>
+<script>
+const pokemonSeed=[];
+const setSeed=[
+{id:"sv1",name:"Scarlet & Violet",sub:"Scarlet & Violet",symbol:"",total:258,series:"Scarlet & Violet"},
+{id:"sv2",name:"Paldea Evolved",sub:"Scarlet & Violet",symbol:"",total:279,series:"Scarlet & Violet"},
+{id:"sv3",name:"Obsidian Flames",sub:"Scarlet & Violet",symbol:"",total:230,series:"Scarlet & Violet"},
+{id:"sv3.5",name:"151",sub:"Scarlet & Violet",symbol:"",total:207,series:"Scarlet & Violet"},
+{id:"sv4",name:"Paradox Rift",sub:"Scarlet & Violet",symbol:"",total:266,series:"Scarlet & Violet"},
+{id:"sv4.5",name:"Paldean Fates",sub:"Scarlet & Violet",symbol:"",total:245,series:"Scarlet & Violet"},
+{id:"sv5",name:"Temporal Forces",sub:"Scarlet & Violet",symbol:"",total:218,series:"Scarlet & Violet"},
+{id:"sv6",name:"Twilight Masquerade",sub:"Scarlet & Violet",symbol:"",total:226,series:"Scarlet & Violet"},
+{id:"sv6.5",name:"Shrouded Fable",sub:"Scarlet & Violet",symbol:"",total:99,series:"Scarlet & Violet"},
+{id:"sv7",name:"Stellar Crown",sub:"Scarlet & Violet",symbol:"",total:175,series:"Scarlet & Violet"},
+{id:"sv8",name:"Surging Sparks",sub:"Scarlet & Violet",symbol:"",total:252,series:"Scarlet & Violet"},
+{id:"sv8.5",name:"Prismatic Evolutions",sub:"Scarlet & Violet",symbol:"",total:180,series:"Scarlet & Violet"},
+{id:"sv9",name:"Journey Together",sub:"Scarlet & Violet",symbol:"",total:190,series:"Scarlet & Violet"},
+{id:"sv10",name:"Destined Rivals",sub:"Scarlet & Violet",symbol:"",total:244,series:"Scarlet & Violet"},
+{id:"sv10.5b",name:"Black Bolt",sub:"Scarlet & Violet",symbol:"",total:172,series:"Scarlet & Violet"},
+{id:"sv10.5w",name:"White Flare",sub:"Scarlet & Violet",symbol:"",total:173,series:"Scarlet & Violet"},
+{id:"me1",name:"Mega Evolution",sub:"Mega Evolution",symbol:"",total:188,series:"Mega Evolution"},
+{id:"me2",name:"Phantasmal Flames",sub:"Mega Evolution",symbol:"",total:130,series:"Mega Evolution"},
+{id:"me2.5",name:"Ascended Heroes",sub:"Mega Evolution",symbol:"",total:295,series:"Mega Evolution"},
+{id:"me3",name:"Perfect Order",sub:"Mega Evolution",symbol:"",total:124,series:"Mega Evolution"},
+{id:"me4",name:"Chaos Rising",sub:"Mega Evolution",symbol:"",total:122,series:"Mega Evolution"},
+{id:"me5",name:"Pitch Black",sub:"Mega Evolution",symbol:"",total:120,series:"Mega Evolution"},
+{id:"30c",name:"30th Celebration",sub:"Mega Evolution",symbol:"",total:161,series:"Mega Evolution"}
+];
+const translations={
+pt:{tabAchievements:"Conquistas",achTitle:"Conquistas",achDesc:"Objetivos desbloqueados automaticamente conforme sua coleção cresce.",achUnlocked:"desbloqueadas",achLocked:"Bloqueada",achSecret:"Conquista secreta",achProgress:"Progresso",achDone:"Desbloqueada!",achToast:"Conquista desbloqueada",achUnknown:"Dados insuficientes no catálogo",
+yourJourney:"SUA POKÉDEX, SUA JORNADA",heroTitle:"Cada Pokémon registrado te deixa mais perto de completar a Pokédex.",heroSub:"Uma Pokédex pessoal e um fichário digital para cada carta da sua coleção.",completion:"CONCLUSÃO",pokedexProgress:"Pokémon registrados",pokedexCountLabel:"Pokémon na Pokédex",nationalDex:"dos 1.025 Pokémon",uniqueCards:"Pokédex concluída",inYourBinder:"dos 1.025 Pokémon",missingCards:"Cartas faltando",acrossTrackedSets:"nas coleções acompanhadas",tabDex:"Pokédex",tabSets:"Coleções TCG",tabBinder:"Meu fichário",dexTitle:"Pokédex Nacional",dexDesc:"Marque os Pokémon que você já registrou.",pageLabel:"Página {current} de {total}",searchPokemon:"Buscar Pokémon...",allPokemon:"Todos",allRegions:"Escolher região",registered:"Registrados",notRegistered:"Não registrados",setsTitle:"Coleções Pokémon TCG",setsDesc:"Acompanhe o que você tem e o que falta em cada set.",addSet:"+ Nova coleção",binderTitle:"Meu fichário",binderDesc:"Suas cartas, quantidades e repetidas em um só lugar.",addCard:"+ Adicionar carta",searchSet:"Buscar coleção...",searchCard:"Buscar carta...",allCards:"Todas as cartas",duplicatesOnly:"Com repetidas",markOwned:"✓ Registrado",markMissing:"Marcar registrado",owned:"Registrado",notOwned:"Não registrado",cards:"cartas",tracked:"acompanhadas",progress:"concluído",emptyBinder:"Seu fichário está vazio. Adicione sua primeira carta!",emptySets:"Nenhuma coleção encontrada.",addCardTitle:"Adicionar carta ao fichário",cardName:"Nome da carta",cardSet:"Coleção / expansão",cardNumber:"Número da carta (opcional)",quantity:"Quantidade",cancel:"Cancelar",save:"Salvar carta",addSetTitle:"Adicionar coleção",setName:"Nome da coleção",setSeries:"Série",setTotal:"Total de cartas do set",saveSet:"Salvar coleção",remove:"Remover",exported:"Backup exportado!",noCards:"Nenhuma carta encontrada.",duplicates:"repetidas",totalTracked:"Cartas esperadas nos sets",registeredDex:"Pokémon registrados",search:"Buscar",confirmRemove:"Remover esta carta do fichário?",englishName:"Nome em inglês"},
+en:{tabAchievements:"Achievements",achTitle:"Achievements",achDesc:"Goals unlock automatically as your collection grows.",achUnlocked:"unlocked",achLocked:"Locked",achSecret:"Secret achievement",achProgress:"Progress",achDone:"Unlocked!",achToast:"Achievement unlocked",achUnknown:"Catalog data unavailable",yourJourney:"YOUR POKÉDEX, YOUR JOURNEY",heroTitle:"Every Pokémon you register brings you closer to completing your Pokédex.",heroSub:"A personal Pokédex and a digital binder for every card in your collection.",completion:"COMPLETION",pokedexProgress:"Pokémon registered",pokedexCountLabel:"Pokémon in Pokédex",nationalDex:"of 1,025 Pokémon",uniqueCards:"Pokédex completed",inYourBinder:"of 1,025 Pokémon",missingCards:"Cards missing",acrossTrackedSets:"across tracked sets",tabDex:"Pokédex",tabSets:"TCG Sets",tabBinder:"My Binder",dexTitle:"National Pokédex",dexDesc:"Mark the Pokémon you have registered.",pageLabel:"Page {current} of {total}",searchPokemon:"Search Pokémon...",allPokemon:"All Pokémon",allRegions:"Choose region",registered:"Registered",notRegistered:"Not registered",setsTitle:"Pokémon TCG Sets",setsDesc:"Track what you own and what is missing from each set.",addSet:"+ New set",binderTitle:"My Binder",binderDesc:"Your cards, quantities and duplicates in one place.",addCard:"+ Add card",searchSet:"Search sets...",searchCard:"Search cards...",allCards:"All cards",duplicatesOnly:"With duplicates",markOwned:"✓ Registered",markMissing:"Mark as Collected",owned:"Registered",notOwned:"Not registered",cards:"cards",tracked:"tracked",progress:"complete",emptyBinder:"Your binder is empty. Add your first card!",emptySets:"No sets found.",addCardTitle:"Add card to binder",cardName:"Card name",cardSet:"Set / expansion",cardNumber:"Card number (optional)",quantity:"Quantity",cancel:"Cancel",save:"Save card",addSetTitle:"Add set",setName:"Set name",setSeries:"Series",setTotal:"Total cards in set",saveSet:"Save set",remove:"Remove",exported:"Backup exported!",noCards:"No cards found.",duplicates:"duplicates",totalTracked:"Expected cards in sets",registeredDex:"Pokémon registered",search:"Search",confirmRemove:"Remove this card from your binder?",englishName:"English name"}
+};
+let lang=localStorage.getItem("dexfolio_lang")||"pt";
+let state=JSON.parse(localStorage.getItem("dexfolio_data")||"null")||{ownedPokemon:[],cards:[],sets:setSeed};
+if(!state.sets||!state.sets.length)state.sets=setSeed;
+state.ownedPokemon=[...new Set((state.ownedPokemon||[]).map(Number).filter(n=>Number.isInteger(n)&&n>0))];
+if(!state.setOwned)state.setOwned={};
+const t=k=>translations[lang][k]||k;
+const save=()=>{localStorage.setItem("dexfolio_data",JSON.stringify(state));renderStats();checkAchievements()};
+if(!state.setOwned) state.setOwned={};
+let activeSet=null, setCardsCache={};
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderStats(){
+ const dexOwned=new Set((state.ownedPokemon||[]).map(Number));
+ const dexPct=dexOwned.size/1025*100;
+ const pctText=dexPct.toLocaleString(lang==='pt'?'pt-BR':'en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+ const ownedCards=Object.values(state.setOwned||{}).reduce((n,a)=>n+new Set(a||[]).size,0);
+ const tracked=state.sets||[];
+ const completed=tracked.filter(s=>{const total=(officialSets[s.name.toLowerCase()]||Object.values(officialSets).find(x=>x.name.toLowerCase()===s.name.toLowerCase()))?.total||s.total||0;return total>0&&new Set(state.setOwned?.[s.id]||[]).size>=total}).length;
+ const onSets=!document.getElementById('view-sets').classList.contains('hidden');
+ const stats=document.querySelectorAll('.stat');
+ if(onSets){stats[0].querySelector('[data-i18n]').textContent=lang==='pt'?'Sets completos':'Completed sets';stats[0].querySelector('strong').textContent=`${completed} / ${tracked.length}`;stats[0].querySelector('small').textContent=lang==='pt'?'coleções completas':'sets completed';stats[1].querySelector('[data-i18n]').textContent=lang==='pt'?'Cartas registradas':'Cards registered';stats[1].querySelector('strong').textContent=String(ownedCards);stats[1].querySelector('small').textContent=lang==='pt'?'cartas únicas':'unique cards';}
+ else {stats[0].querySelector('[data-i18n]').textContent=translations[lang].pokedexProgress;stats[0].querySelector('strong').textContent=`${dexOwned.size.toLocaleString()} / 1,025`;stats[0].querySelector('small').textContent=pctText+'%';stats[1].querySelector('[data-i18n]').textContent=translations[lang].uniqueCards;stats[1].querySelector('strong').textContent=pctText+'%';stats[1].querySelector('small').textContent=translations[lang].inYourBinder;}
+ document.getElementById('dexCount').textContent=`${dexOwned.size.toLocaleString()} / 1,025`;
+ document.getElementById('overallPct').textContent=pctText+'%';document.getElementById('overallBar').style.width=Math.min(100,dexPct)+'%';
+}
+let allPokemonData=[];
+const spriteUrl=id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${id}.gif`;
+const fallbackSprite=id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+async function loadFullDex(){
+ const grid=document.getElementById("dexGrid");
+ grid.innerHTML='<div class="empty">Loading Pokédex data…</div>';
+ try{
+  const res=await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025&offset=0");
+  if(!res.ok) throw new Error("PokéAPI unavailable");
+  const data=await res.json();
+  allPokemonData=data.results.map((p,i)=>({id:i+1,name:p.name.replace(/-/g," "),url:p.url}));
+  renderDex();
+ }catch(e){
+  grid.innerHTML='<div class="empty">Não foi possível carregar a Pokédex completa agora. Conecte-se à internet e tente novamente.</div>';
+ }
+}
+let dexPage=0;
+const dexPageSize=12;
+function renderDex(){
+ const q=document.getElementById("dexSearch").value.toLowerCase().trim(),f=document.getElementById("dexFilter").value,region=document.getElementById("dexRegion").value;
+ const regionRanges={kanto:[1,151],johto:[152,251],hoenn:[252,386],sinnoh:[387,493],unova:[494,649],kalos:[650,721],alola:[722,809],galar:[810,898],hisui:[899,905],paldea:[906,1025]};
+ const range=regionRanges[region];
+ const all=allPokemonData.filter(p=>(!range||(p.id>=range[0]&&p.id<=range[1]))&&(p.name.includes(q)||String(p.id).includes(q))&&(f==="all"||(f==="owned"?state.ownedPokemon.map(Number).includes(Number(p.id)):!state.ownedPokemon.map(Number).includes(Number(p.id)))));
+ const pageCount=Math.max(1,Math.ceil(all.length/dexPageSize));
+ dexPage=Math.max(0,Math.min(dexPage,pageCount-1));
+ const shown=all.slice(dexPage*dexPageSize,(dexPage+1)*dexPageSize);
+ document.getElementById("dexGrid").innerHTML=shown.map(p=>{const own=state.ownedPokemon.map(Number).includes(Number(p.id));return `<article class="pokemon"><div class="poke-art"><img loading="lazy" alt="${esc(p.name)}" src="${spriteUrl(p.id)}" onerror="this.onerror=null;this.src='${fallbackSprite(p.id)}'"></div><div class="poke-num">#${String(p.id).padStart(4,"0")}</div><h3>${esc(p.name.split(" ").map(x=>x.charAt(0).toUpperCase()+x.slice(1)).join(" "))}</h3><button class="mini-btn ${own?"owned":""}" data-own="${p.id}">${own?t("markOwned"):t("markMissing")}</button></article>`}).join("")||`<div class="empty">${t("noCards")}</div>`;
+ const prev=document.getElementById("dexPrev"),next=document.getElementById("dexNext");
+ prev.disabled=dexPage===0;next.disabled=dexPage>=pageCount-1;
+ document.getElementById("dexPageLabel").textContent=t("pageLabel").replace("{current}",String(dexPage+1)).replace("{total}",String(pageCount));
+ document.getElementById("dexPagination").classList.toggle("hidden",all.length===0);
+ document.querySelectorAll("[data-own]").forEach(b=>b.onclick=()=>{
+  const id=Number(b.dataset.own);state.ownedPokemon=(state.ownedPokemon||[]).map(Number);const wasOwned=state.ownedPokemon.includes(id);
+  state.ownedPokemon=wasOwned?state.ownedPokemon.filter(x=>x!==id):[...state.ownedPokemon,id];
+  const nowOwned=!wasOwned;
+  b.classList.toggle("owned",nowOwned);b.textContent=nowOwned?t("markOwned"):t("markMissing");
+  // Persist without rebuilding all 12 cards or reloading their sprites.
+  state.achHistory=state.achHistory||{visitDays:[],activeDays:[],baselineCards:null};const achDay=new Date().toISOString().slice(0,10);if(!state.achHistory.activeDays.includes(achDay))state.achHistory.activeDays.push(achDay);
+  localStorage.setItem("dexfolio_data",JSON.stringify(state));
+  renderStats();checkAchievements();
+ });
+}
+let officialSets={};
+async function loadOfficialSets(){
+ try{
+  const res=await fetch("https://api.pokemontcg.io/v2/sets?orderBy=-releaseDate&pageSize=250");
+  if(!res.ok) return;
+  const data=await res.json();
+  officialSets={};
+  for(const s of data.data||[]){
+   const n=(s.name||"").toLowerCase();
+   const series=(s.series||"").toLowerCase();
+   if(series.includes("scarlet & violet")||series.includes("mega evolution")){
+    officialSets[n]={logo:s.images?.logo||"",id:s.id,name:s.name,series:s.series,total:s.total};
+   }
+  }
+  renderSets();
+ }catch(e){/* keep curated set list available offline */}
+}
+const expandedCategories = new Set();
+function renderSets(){
+ const q=document.getElementById("setSearch").value.toLowerCase();
+ const sets=state.sets.filter(s=>s.name.toLowerCase().includes(q)||s.sub.toLowerCase().includes(q));
+ const categories=[
+  {id:"mega",name:lang==="pt"?"Mega Evolução":"Mega Evolution",match:s=>(s.series||s.sub||"").toLowerCase().includes("mega evolution"),logo:"https://images.pokemontcg.io/me1/logo.png"},
+  {id:"sv",name:lang==="pt"?"Escarlate e Violeta":"Scarlet & Violet",match:s=>(s.series||s.sub||"").toLowerCase().includes("scarlet & violet")||(s.series||s.sub||"").toLowerCase().includes("escarlate e violeta"),logo:"https://images.pokemontcg.io/sv1/logo.png"}
+ ];
+ document.getElementById("setsGrid").innerHTML="";
+ if(activeSet){document.getElementById("setCategories").classList.add("hidden");document.getElementById("setDetail").classList.remove("hidden");renderSetDetail(activeSet);return;}
+ document.getElementById("setCategories").classList.remove("hidden");document.getElementById("setDetail").classList.add("hidden");
+ document.getElementById("setCategories").innerHTML=categories.map(cat=>{
+  const group=sets.filter(cat.match),expanded=expandedCategories.has(cat.id)||!!q;
+  return `<section class="set-category"><button class="category-toggle" type="button" data-category="${cat.id}" aria-expanded="${expanded}"><span class="category-brand"><img src="${cat.logo}" alt="" onerror="this.style.display='none'"><span>${cat.name}</span></span><span class="category-arrow">${expanded?'↑':'↓'}</span></button><div class="category-sets ${expanded?'':'hidden'}"><div class="grid">${group.map(s=>{
+   const official=officialSets[s.name.toLowerCase()]||Object.values(officialSets).find(x=>x.name.toLowerCase()===s.name.toLowerCase());
+   const total=official?.total||s.total||0, cards=state.setOwned[s.id]||[], owned=new Set(cards).size,pct=total?Math.min(100,Math.round(owned/total*100)):0;
+   const logo=official?.logo||`https://images.pokemontcg.io/${official?.id||s.id}/logo.png`;
+   return `<article class="set-card"><div class="set-logo"><img loading="lazy" src="${esc(logo)}" alt="${lang==='pt'?'Logo de':'Logo for'} ${esc(s.name)}" onerror="this.style.display='none';this.parentElement.classList.add('logo-fallback')"><span>${esc(s.name)}</span></div><h3>${esc(s.name)}</h3><div class="set-meta"><span>${owned} / ${total} ${lang==='pt'?'cartas únicas':'unique cards'}</span><span>${pct}%</span></div><div class="progress"><i style="width:${pct}%"></i></div><p>${pct}% ${lang==='pt'?'concluído':'complete'}</p><button class="mini-btn" data-open-set="${esc(s.id)}">${lang==='pt'?'Ver cartas':'View cards'}</button></article>`
+  }).join("")||'<div class="empty">Nenhum set disponível nesta categoria.</div>'}</div></div></section>`;
+ }).join("");
+ document.querySelectorAll("[data-category]").forEach(b=>b.onclick=()=>{const id=b.dataset.category;expandedCategories.has(id)?expandedCategories.delete(id):expandedCategories.add(id);renderSets()});
+ document.querySelectorAll("[data-open-set]").forEach(b=>b.onclick=()=>{activeSet=b.dataset.openSet;renderSets()});
+}
+async function renderSetDetail(setId){
+ const s=state.sets.find(x=>x.id===setId);if(!s)return;
+ const root=document.getElementById("setDetail");
+ root.innerHTML=`<div class="section-head"><div><h2>${esc(s.name)}</h2><p>${lang==='pt'?'Checklist oficial de cartas · ordenado pela numeração':'Official card checklist · sorted by number'}</p></div><button class="ghost" id="backToSets">${lang==='pt'?'← Voltar às coleções':'← Back to sets'}</button></div><div id="setCardsSummary" class="section-head"><span>${lang==='pt'?'Carregando cartas oficiais…':'Loading official cards…'}</span></div><div class="grid tcg-grid" id="setCardsGrid"></div>`;
+ root.querySelector("#backToSets").onclick=()=>{activeSet=null;renderSets()};
+ if(!setCardsCache[setId]){
+  const official=officialSets[s.name.toLowerCase()]||Object.values(officialSets).find(x=>x.name.toLowerCase()===s.name.toLowerCase());
+  const apiId=official?.id||s.id;
+  try{const cacheKey='dexfolio_cards_'+apiId;const cached=localStorage.getItem(cacheKey);if(cached){const parsed=JSON.parse(cached);if(Array.isArray(parsed)&&parsed.length)setCardsCache[setId]=parsed;}if(!setCardsCache[setId]){let all=[];try{let page=1,more=true;while(more){const res=await fetch(`https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent('set.id:'+apiId)}&orderBy=number&pageSize=250&page=${page}`,{mode:'cors',cache:'default'});if(!res.ok)throw Error('Pokémon TCG API indisponível');const d=await res.json();const batch=(d.data||[]).map(c=>({...c,number:c.number||'',set:c.set||{}}));all.push(...batch);more=batch.length===250&&all.length<(d.totalCount||0);page++;if(page>10)break;}}catch(primaryError){
+  const aliases={sv1:['sv1','sv01'],sv2:['sv2','sv02'],sv3:['sv3','sv03'],'sv3.5':['sv3.5','sv03.5'],sv4:['sv4','sv04'],'sv4.5':['sv4.5','sv04.5'],sv5:['sv5','sv05'],sv6:['sv6','sv06'],'sv6.5':['sv6.5','sv06.5'],sv7:['sv7','sv07'],sv8:['sv8','sv08'],'sv8.5':['sv8.5','sv08.5'],sv9:['sv9','sv09'],sv10:['sv10'],me1:['me1'],me2:['me2'],'me2.5':['me2.5'],me3:['me3'],me4:['me4'],me5:['me5']};
+  let d2=null,lastError=primaryError;
+  for(const candidate of (aliases[s.id]||[apiId,s.id])){for(const language of ['en','pt']){try{const rr=await fetch(`https://api.tcgdex.net/v2/${language}/sets/${encodeURIComponent(candidate)}`,{mode:'cors',cache:'default'});if(!rr.ok)continue;const json=await rr.json();if(Array.isArray(json.cards)&&json.cards.length){d2=json;break;}}catch(err){lastError=err;}}if(d2)break;}
+  if(!d2)throw lastError||Error('Checklist indisponível');
+  const details=await Promise.all((d2.cards||[]).map(async c=>{if(c.name&&c.image)return c;for(const language of ['en','pt']){try{const rr=await fetch(`https://api.tcgdex.net/v2/${language}/cards/${encodeURIComponent(c.id||`${s.id}-${c.localId}`)}`,{mode:'cors',cache:'default'});if(rr.ok){const detail=await rr.json();if(detail?.name)return detail;}}catch(_){}}return c;}));
+  all=details.map(c=>({id:`${apiId}-${c.localId||c.id}`,name:c.name||`Carta ${c.localId||c.id}`,number:c.localId||c.id,rarity:c.rarity||'Raridade não informada',category:c.category||'',types:c.types||[],subtypes:c.suffix?[c.suffix]:[],images:{small:c.image?`${c.image}/low.webp`:''},set:{printedTotal:d2.cardCount?.official||d2.cardCount?.total||s.total,total:d2.cardCount?.total||d2.cardCount?.total||s.total}}));
+ }if(!all.length)throw Error('Checklist vazio');all.sort((a,b)=>{const na=String(a.number||'').match(/\d+/),nb=String(b.number||'').match(/\d+/);const xa=na?Number(na[0]):99999,xb=nb?Number(nb[0]):99999;return xa-xb||String(a.number).localeCompare(String(b.number),undefined,{numeric:true})});setCardsCache[setId]=all;try{localStorage.setItem(cacheKey,JSON.stringify(all))}catch(_){}checkAchievements();}}catch(e){root.querySelector("#setCardsSummary").innerHTML=`<div class="empty">${lang==='pt'?'Não foi possível carregar as cartas. Confira a internet e tente novamente.':'Could not load cards. Check your connection and try again.'}<br><button class="mini-btn" id="retryCards">${lang==='pt'?'Tentar novamente':'Retry'}</button></div>`;root.querySelector("#retryCards").onclick=()=>{delete setCardsCache[setId];renderSetDetail(setId)};return;}
+ }
+ const cards=setCardsCache[setId]||[],owned=new Set(state.setOwned[setId]||[]);
+ root.querySelector("#setCardsSummary").innerHTML=`<p>${owned.size} / ${cards.length} ${lang==='pt'?'cartas únicas':'unique cards'} · ${cards.length?Math.round(owned.size/cards.length*100):0}% ${lang==='pt'?'completo':'complete'}</p>`;
+ root.querySelector("#setCardsGrid").innerHTML=cards.map(c=>{const num=c.number||"?",isOwned=owned.has(c.id),img=c.images?.small||"";return `<article class="pokemon tcg-card"><div class="poke-art" style="height:auto;min-height:130px;background:transparent">${img?`<img loading="lazy" src="${esc(img)}" alt="Carta ${esc(c.name)}" style="width:100%;max-width:180px;border-radius:9px">`:'<span class="card-glyph">TCG</span>'}</div><div class="poke-num">${esc(num)} / ${esc(String(c.set?.printedTotal||c.set?.total||cards.length).padStart(3,'0'))}</div><h3>${esc(c.name)}</h3><div class="types"><span class="type">${esc(c.rarity||"Raridade não informada")}</span></div><button class="mini-btn ${isOwned?'owned':''}" data-toggle-card="${esc(c.id)}">${isOwned?(lang==='pt'?'✓ Registrado':'✓ Collected'):(lang==='pt'?'Marcar Registrado':'Mark as Collected')}</button></article>`}).join("")||'<div class="empty">Nenhuma carta retornada para esta coleção.</div>';
+ root.querySelectorAll("[data-toggle-card]").forEach(b=>b.onclick=()=>{const id=b.dataset.toggleCard;const arr=new Set(state.setOwned[setId]||[]);arr.has(id)?arr.delete(id):arr.add(id);state.setOwned[setId]=Array.from(arr);state.achHistory=state.achHistory||{visitDays:[],activeDays:[],baselineCards:null};const achDay=new Date().toISOString().slice(0,10);if(!state.achHistory.activeDays.includes(achDay))state.achHistory.activeDays.push(achDay);save();renderSetDetail(setId);renderSets();renderStats()});
+}
+
+function renderBinder(){
+ const q=document.getElementById("binderSearch").value.toLowerCase(),f=document.getElementById("binderFilter").value;
+ const cards=state.cards.filter(c=>(c.name.toLowerCase().includes(q)||c.setName.toLowerCase().includes(q)||c.number.toLowerCase().includes(q))&&(f==="all"||c.qty>1));
+ document.getElementById("binderList").innerHTML=cards.map(c=>`<article class="card-row"><div class="card-thumb"><span class="card-glyph">TCG</span></div><div class="card-info"><h3>${esc(c.name)} ${c.qty>1?`<span class="type">${c.qty-1} ${t("duplicates")}</span>`:""}</h3><p>${esc(c.setName)}${c.number?" · #"+esc(c.number):""}</p></div><div class="qty"><button data-dec="${esc(c.id)}" aria-label="Decrease">−</button><b>${c.qty}</b><button data-inc="${esc(c.id)}" aria-label="Increase">+</button></div><button class="ghost" data-del="${esc(c.id)}" aria-label="${t("remove")}">×</button></article>`).join("")||`<div class="empty">${t("emptyBinder")}</div>`;
+ document.querySelectorAll("[data-inc]").forEach(b=>b.onclick=()=>changeQty(b.dataset.inc,1));
+ document.querySelectorAll("[data-dec]").forEach(b=>b.onclick=()=>changeQty(b.dataset.dec,-1));
+ document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(confirm(t("confirmRemove"))){state.cards=state.cards.filter(c=>c.id!==b.dataset.del);save();renderBinder();renderSets()}});
+}
+function changeQty(id,d){const c=state.cards.find(x=>x.id===id);if(!c)return;c.qty=Math.max(0,c.qty+d);if(!c.qty)state.cards=state.cards.filter(x=>x.id!==id);state.achHistory=state.achHistory||{visitDays:[],activeDays:[],baselineCards:null};const achDay=new Date().toISOString().slice(0,10);if(!state.achHistory.activeDays.includes(achDay))state.achHistory.activeDays.push(achDay);save();renderBinder();renderSets()}
+function openCardModal(preselect=""){
+ const root=document.getElementById("modalRoot");
+ root.innerHTML=`<div class="modal-bg"><div class="modal"><h2>${t("addCardTitle")}</h2><form id="cardForm"><label>${t("cardName")}<input class="field" name="name" required maxlength="80"></label><label>${t("cardSet")}<select class="field" name="setId">${state.sets.map(s=>`<option value="${esc(s.id)}" ${s.id===preselect?"selected":""}>${esc(s.name)}</option>`).join("")}<option value="">—</option></select></label><label>${t("cardNumber")}<input class="field" name="number" maxlength="20"></label><label>${t("quantity")}<input class="field" type="number" name="qty" min="1" value="1" required></label><div class="modal-actions"><button type="button" class="ghost" id="cancelModal">${t("cancel")}</button><button class="primary">${t("save")}</button></div></form></div></div>`;
+ root.querySelector("#cancelModal").onclick=()=>root.innerHTML="";
+ root.querySelector("#cardForm").onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),setId=fd.get("setId"),set=state.sets.find(s=>s.id===setId);const name=String(fd.get("name")).trim(),number=String(fd.get("number")).trim();const existing=state.cards.find(c=>c.name.toLowerCase()===name.toLowerCase()&&c.setId===setId&&c.number===number);if(existing)existing.qty+=+fd.get("qty");else state.cards.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),name,setId,setName:set?set.name:"Other / Outro",number,qty:+fd.get("qty")});state.achHistory=state.achHistory||{visitDays:[],activeDays:[],baselineCards:null};const achDay=new Date().toISOString().slice(0,10);if(!state.achHistory.activeDays.includes(achDay))state.achHistory.activeDays.push(achDay);save();root.innerHTML="";renderBinder();renderSets()};
+}
+function openSetModal(){
+ const root=document.getElementById("modalRoot");root.innerHTML=`<div class="modal-bg"><div class="modal"><h2>${t("addSetTitle")}</h2><form id="setForm"><label>${t("setName")}<input class="field" name="name" required maxlength="80"></label><label>${t("setSeries")}<input class="field" name="sub" value="Scarlet & Violet" required></label><label>${t("setTotal")}<input class="field" type="number" name="total" min="1" value="100" required></label><div class="modal-actions"><button type="button" class="ghost" id="cancelModal">${t("cancel")}</button><button class="primary">${t("saveSet")}</button></div></form></div></div>`;
+ root.querySelector("#cancelModal").onclick=()=>root.innerHTML="";
+ root.querySelector("#setForm").onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),id="custom-"+Date.now();state.sets.push({id,name:String(fd.get("name")).trim(),sub:String(fd.get("sub")).trim(),total:+fd.get("total"),symbol:"🃏"});save();root.innerHTML="";renderSets()};
+}
+const ACHIEVEMENTS=[
+ {id:'collector1',cat:0,icon:'🃏',pt:['Tudo começa aqui','Sua jornada como colecionador começou!','Registrar a primeira carta única.'],en:['It All Starts Here','Your collector journey has begun!','Register your first unique card.'],goal:1,key:'cards'},
+ {id:'collector25',cat:0,icon:'📚',pt:['Colecionador iniciante','Sua coleção está começando a crescer.','Registrar 25 cartas únicas.'],en:['Beginner Collector','Your collection is starting to grow.','Register 25 unique cards.'],goal:25,key:'cards'},
+ {id:'collector100',cat:0,icon:'🗂️',pt:['Coleção em expansão','Você já tem uma bela coleção!','Registrar 100 cartas únicas.'],en:['Growing Collection','You have a fine collection!','Register 100 unique cards.'],goal:100,key:'cards'},
+ {id:'collector500',cat:0,icon:'🏅',pt:['Colecionador dedicado','Sua coleção está ficando impressionante.','Registrar 500 cartas únicas.'],en:['Dedicated Collector','Your collection is becoming impressive.','Register 500 unique cards.'],goal:500,key:'cards'},
+ {id:'collector1000',cat:0,icon:'👑',pt:['Lenda dos colecionadores','Um verdadeiro mestre da coleção Pokémon TCG.','Registrar 1.000 cartas únicas.'],en:['Collector Legend','A true Pokémon TCG collection master.','Register 1,000 unique cards.'],goal:1000,key:'cards'},
+ {id:'pokemon1',cat:1,icon:'🔴',pt:['Primeiro encontro','Seu primeiro Pokémon foi registrado!','Registrar uma carta de Pokémon.'],en:['First Encounter','Your first Pokémon card is registered!','Register a Pokémon card.'],goal:1,key:'pokemonCards'},
+ {id:'pokemon50',cat:1,icon:'🧭',pt:['Explorador Pokémon','Sua jornada pela Pokédex está avançando.','Registrar cartas de 50 Pokémon diferentes.'],en:['Pokémon Explorer','Your Pokédex journey is progressing.','Register cards for 50 different Pokémon.'],goal:50,key:'pokemonSpecies'},
+ {id:'region',cat:1,icon:'🌍',pt:['Mestre de uma região','Você completou uma região da Pokédex!','Registrar todos os Pokémon de uma região cadastrada.'],en:['Regional Master','You completed a Pokédex region!','Register every Pokémon in a catalogued region.'],goal:1,key:'region',unavailable:true},
+ {id:'legendary10',cat:1,icon:'✨',pt:['Encontro lendário','Sua coleção abriga Pokémon extraordinários.','Registrar 10 Pokémon lendários ou míticos diferentes.'],en:['Legendary Encounter','Your collection holds extraordinary Pokémon.','Register 10 different Legendary or Mythical Pokémon.'],goal:10,key:'legendary',unavailable:true},
+ {id:'pokedexfull',cat:1,icon:'📖',pt:['Pokédex completa','Você alcançou o sonho de todo treinador!','Registrar todos os Pokémon do catálogo suportado.'],en:['Complete Pokédex','You achieved every Trainer’s dream!','Register every Pokémon in the supported Pokédex.'],goal:1025,key:'dex'},
+ {id:'set1',cat:2,icon:'🗃️',pt:['Primeira expansão','Sua jornada pelas expansões começou!','Registrar pelo menos uma carta de uma expansão.'],en:['First Set','Your set collecting journey has begun!','Register at least one card from a set.'],goal:1,key:'setsWithCards'},
+ {id:'set5',cat:2,icon:'🧭',pt:['Explorador de expansões','Você está explorando diferentes coleções.','Registrar cartas de 5 expansões diferentes.'],en:['Set Explorer','You are exploring different collections.','Register cards from 5 different sets.'],goal:5,key:'setsWithCards'},
+ {id:'halfset',cat:2,icon:'🌓',pt:['Metade do caminho','Falta menos do que você imagina para completar essa expansão!','Alcançar 50% em uma expansão.'],en:['Halfway There','You are closer than you think to completing a set!','Reach 50% completion in one set.'],goal:1,key:'halfSet'},
+ {id:'setcomplete',cat:2,icon:'🏁',pt:['Expansão completa','Mais uma expansão concluída com sucesso!','Completar 100% de uma expansão cadastrada.'],en:['Set Complete','Another set completed successfully!','Complete 100% of a catalogued set.'],goal:1,key:'completedSets'},
+ {id:'set5complete',cat:2,icon:'🏆',pt:['Mestre das expansões','Você é um verdadeiro especialista em completar coleções!','Completar 5 expansões diferentes.'],en:['Set Master','You are a true expert at completing collections!','Complete 5 different sets.'],goal:5,key:'completedSets'},
+ {id:'holo1',cat:3,icon:'🌟',pt:['Brilho especial','Sua coleção ganhou um brilho especial!','Registrar a primeira carta holográfica.'],en:['Special Shine','Your collection has a special shine!','Register your first holographic card.'],goal:1,key:'holo',unavailable:true},
+ {id:'rare10',cat:3,icon:'💎',pt:['Caçador de raridades','Você está encontrando cartas cada vez mais especiais.','Registrar 10 cartas únicas de alta raridade.'],en:['Rarity Hunter','You are finding increasingly special cards.','Register 10 unique high-rarity cards.'],goal:10,key:'highRare',unavailable:true},
+ {id:'shiny25',cat:3,icon:'✨',pt:['Coleção brilhante','Uma coleção cheia de cartas memoráveis.','Registrar 25 cartas holográficas ou especiais diferentes.'],en:['Shining Collection','A collection full of memorable cards.','Register 25 different holographic or special cards.'],goal:25,key:'special',unavailable:true},
+ {id:'maxrarity',cat:3,icon:'👑',pt:['Raridade máxima','Você encontrou uma das cartas mais especiais da coleção!','Registrar uma carta da maior raridade do catálogo.'],en:['Maximum Rarity','You found one of the collection’s most special cards!','Register a card in the catalog’s highest rarity tier.'],goal:1,key:'maxRarity',unavailable:true},
+ {id:'rare50',cat:3,icon:'🪙',pt:['Tesouro raro','Sua coleção está cheia de tesouros!','Registrar 50 cartas únicas holográficas, especiais ou de alta raridade.'],en:['Rare Treasure','Your collection is full of treasures!','Register 50 unique holo, special, or high-rarity cards.'],goal:50,key:'special',unavailable:true},
+ {id:'days3',cat:4,icon:'📅',pt:['Primeira visita','Você está criando seu espaço de colecionador!','Abrir o Dexfolio em 3 dias diferentes.'],en:['First Visits','You are creating your own collector space!','Open Dexfolio on 3 different days.'],goal:3,key:'days'},
+ {id:'days7',cat:4,icon:'🗓️',pt:['Presença constante','Sua coleção está sempre em movimento.','Abrir o Dexfolio em 7 dias diferentes.'],en:['Regular Presence','Your collection is always moving.','Open Dexfolio on 7 different days.'],goal:7,key:'days'},
+ {id:'days30',cat:4,icon:'✍️',pt:['Compromisso de colecionador','Dedicação de verdade à sua coleção!','Registrar ou atualizar cartas em 30 dias diferentes.'],en:['Collector Commitment','True dedication to your collection!','Register or update cards on 30 different days.'],goal:30,key:'activeDays'},
+ {id:'growth100',cat:4,icon:'📈',pt:['Grande evolução','Olha o quanto sua coleção cresceu!','Aumentar 100 cartas únicas desde a primeira referência histórica.'],en:['Great Growth','Look how much your collection has grown!','Grow by 100 unique cards from the first recorded baseline.'],goal:100,key:'growth'},
+ {id:'conqueror',cat:4,icon:'🥇',pt:['Conquistador','Você está conquistando seu espaço entre os grandes colecionadores!','Desbloquear 20 das outras 29 conquistas.'],en:['Conqueror','You are earning your place among great collectors!','Unlock 20 of the other 29 achievements.'],goal:20,key:'others'},
+ {id:'secretnew',cat:5,icon:'❔',secret:true,pt:['Novo registro','Uma nova descoberta para sua coleção!',''],en:['New Entry','A new discovery for your collection!',''],goal:1,key:'pokemonCards'},
+ {id:'secrettrio',cat:5,icon:'❔',secret:true,pt:['Trindade inicial','Os três parceiros iniciais estão reunidos!',''],en:['Starter Trinity','The three starter partners are together!',''],goal:1,key:'starterTrio',unavailable:true},
+ {id:'secretghost',cat:5,icon:'❔',secret:true,pt:['Assombração na coleção','Sua coleção tem um lado misterioso!',''],en:['Haunting Collection','Your collection has a mysterious side!',''],goal:10,key:'ghost',unavailable:true},
+ {id:'secretvariant',cat:5,icon:'❔',secret:true,pt:['Colecionador de variantes','O mesmo Pokémon, novas possibilidades!',''],en:['Variant Collector','Same Pokémon, new possibilities!',''],goal:1,key:'variants'},
+ {id:'dexmaster',cat:5,icon:'👑',secret:true,pt:['Mestre do Dexfolio','Você dominou o Dexfolio. Sua jornada como colecionador alcançou um novo nível!',''],en:['Dexfolio Master','You mastered Dexfolio. Your collector journey has reached a new level!',''],goal:29,key:'allOther'}
+];
+const ACH_CATS={pt:['Colecionador','Pokédex','Expansões','Raridades','Dedicação','Segredos'],en:['Collector','Pokédex','Sets','Rarities','Dedication','Secrets']};
+function achData(){
+ const uniqueSetCards=new Set(Object.values(state.setOwned||{}).flat().map(String));
+ const manual=new Map();(state.cards||[]).forEach(c=>{const key=`${String(c.setId||'manual')}|${String(c.number||c.name).toLowerCase()}`;manual.set(key,c)});
+ const uniqueCards=new Set([...uniqueSetCards,...manual.keys()]);
+ const ownedIds=new Set((state.ownedPokemon||[]).map(Number));
+ const setProgress=(state.sets||[]).map(s=>{const own=new Set(state.setOwned?.[s.id]||[]).size;const cache=setCardsCache[s.id];const off=officialSets[s.name?.toLowerCase()]||Object.values(officialSets).find(x=>x.name?.toLowerCase()===s.name?.toLowerCase());const total=cache?.length||off?.total||s.total||0;return {s,own,total,pct:total?own/total:0}});
+ const cardsById=[];Object.entries(state.setOwned||{}).forEach(([sid,ids])=>(ids||[]).forEach(id=>{const card=(setCardsCache[sid]||[]).find(c=>String(c.id)===String(id));if(card)cardsById.push(card)}));
+ const pokemonNames=new Set();cardsById.forEach(c=>{const n=String(c.name||'').replace(/\s+(ex|vstar|v|gx|vmax|radiant|tera|★).*$/i,'').trim();if(n)pokemonNames.add(n.toLowerCase())});
+ (state.cards||[]).forEach(c=>{const n=String(c.name||'').replace(/\s+(ex|vstar|v|gx|vmax|radiant|tera|★).*$/i,'').trim();if(n)pokemonNames.add(n.toLowerCase())});
+ const rarityCards=new Set(cardsById.filter(c=>c.rarity&&/holo|rare|illustration|special|hyper|secret|ultra|amazing|rainbow/i.test(c.rarity)).map(c=>c.id));
+ const vals={cards:uniqueCards.size,pokemonCards:pokemonNames.size?1:0,pokemonSpecies:pokemonNames.size,dex:ownedIds.size,setsWithCards:setProgress.filter(x=>x.own>0).length,halfSet:setProgress.some(x=>x.pct>=.5)?1:0,completedSets:setProgress.filter(x=>x.total>0&&x.own>=x.total).length,days:(state.achHistory?.visitDays||[]).length,activeDays:(state.achHistory?.activeDays||[]).length,growth:Math.max(0,uniqueCards.size-(state.achHistory?.baselineCards??uniqueCards.size)),variants:(()=>{const by={};cardsById.forEach(c=>{const n=String(c.name||'').split(/\s+(?:ex|V|GX|VMAX|VSTAR|Radiant|Illustration)/i)[0].toLowerCase();(by[n]??=new Set()).add(c.id)});return Object.values(by).some(x=>x.size>=2)?1:0})(),legendary:0,region:0,holo:0,highRare:0,special:0,maxRarity:0,starterTrio:0,ghost:0,others:0,allOther:0};
+ vals.variants=Math.max(vals.variants,manualVariants());
+ return vals;
+}
+function manualVariants(){const by={};(state.cards||[]).forEach(c=>{const n=String(c.name||'').split(/\s+(?:ex|V|GX|VMAX|VSTAR|Radiant|Illustration)/i)[0].toLowerCase();(by[n]??=new Set()).add(`${c.setId}|${c.number}|${c.name}`)});return Object.values(by).some(x=>x.size>=2)?1:0}
+function achProgress(a,v){if(a.unavailable)return {value:0,goal:a.goal,unavailable:true};if(a.key==='others')return {value:(state.achievementsUnlocked||[]).filter(x=>x!==a.id&&x!=='dexmaster').length,goal:a.goal};if(a.key==='allOther')return {value:ACHIEVEMENTS.filter(x=>x.id!=='dexmaster'&&(state.achievementsUnlocked||[]).includes(x.id)).length,goal:29};return {value:v[a.key]||0,goal:a.goal}}
+function checkAchievements(){
+ state.achHistory=state.achHistory||{visitDays:[],activeDays:[],baselineCards:null};const day=new Date().toISOString().slice(0,10);if(!state.achHistory.visitDays.includes(day))state.achHistory.visitDays.push(day);if(state.achHistory.baselineCards===null||state.achHistory.baselineCards===undefined)state.achHistory.baselineCards=achData().cards;
+ const unlocked=new Set(state.achievementsUnlocked||[]),v=achData();let fresh=[];
+ ACHIEVEMENTS.forEach(a=>{if(unlocked.has(a.id))return;const p=achProgress(a,v);if(!p.unavailable&&p.value>=p.goal){unlocked.add(a.id);fresh.push(a.id)}});
+ // Conqueror and final master can unlock as prerequisite achievements cascade.
+ let changed=true;while(changed){changed=false;const now=[...unlocked];ACHIEVEMENTS.forEach(a=>{if(unlocked.has(a.id))return;const p=achProgress(a,v);if(!p.unavailable&&p.value>=p.goal){unlocked.add(a.id);fresh.push(a.id);changed=true}})}
+ state.achievementsUnlocked=[...unlocked];localStorage.setItem('dexfolio_data',JSON.stringify(state));if(fresh.length){achRecentlyUnlocked=fresh.slice();const a=ACHIEVEMENTS.find(x=>x.id===fresh[0]);if(a)showAchievementToast(a);setTimeout(()=>{achRecentlyUnlocked=[];document.querySelectorAll('.achievement.just-unlocked').forEach(el=>el.classList.remove('just-unlocked'))},1800)}
+ const view=document.getElementById('view-achievements');if(view&&!view.classList.contains('hidden'))renderAchievements();
+}
+function achievementIcon(a){const paths=[`<path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a4 4 0 0 0 4 4M17 6h3v2a4 4 0 0 1-4 4M12 14v5m-4 1h8"/>`,`<circle cx="12" cy="12" r="8.5"/><path d="M12 7v10M7 12h10"/>`,`<path d="M12 3 20 8v8l-8 5-8-5V8z"/><path d="m8 12 2.5 2.5L16 9"/>`,`<path d="M12 3 14.8 8.7 21 9.6l-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z"/>`,`<path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/>`,`<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/>`];return `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[a.cat%paths.length]}</svg>`} 
+let achRecentlyUnlocked=[];
+function showAchievementToast(a){const old=document.querySelector('.ach-toast');if(old)old.remove();const txt=a[lang]||a.pt;const el=document.createElement('div');el.className='ach-toast';const sparks=Array.from({length:12},(_,i)=>`<i style="--dx:${Math.round(Math.cos(i*Math.PI/6)*62)}px;--dy:${Math.round(Math.sin(i*Math.PI/6)*48)}px;--rot:${i*30}deg;--spark:${i%2?'#fff1b8':'#79d8ff'}"></i>`).join('');el.innerHTML=`<div class="ach-burst">${sparks}</div><div class="ach-toast-icon">${achievementIcon(a)}</div><div><strong>${lang==='pt'?'Conquista desbloqueada!':'Achievement unlocked!'}</strong><div>${esc(txt[0])}</div><small>${esc(txt[1])}</small></div>`;document.body.appendChild(el);setTimeout(()=>el.remove(),4600)}
+function renderAchievements(){const v=achData(),unlocked=new Set(state.achievementsUnlocked||[]),root=document.getElementById('achievementList');if(!root)return;const total=unlocked.size;document.getElementById('achCount').textContent=`${total} / 30`;document.getElementById('achBar').style.width=`${total/30*100}%`;root.innerHTML=ACH_CATS[lang].map((cat,idx)=>`<section class="ach-category"><h3>${idx+1}. ${cat}</h3><div class="ach-grid">${ACHIEVEMENTS.filter(a=>a.cat===idx).map(a=>{const isUnlocked=unlocked.has(a.id),secret=a.secret&&!isUnlocked,txt=a[lang]||a.pt,p=achProgress(a,v),pct=p.goal?Math.min(100,p.value/p.goal*100):0;const name=secret?(lang==='pt'?'Conquista secreta':'Secret achievement'):txt[0],desc=secret?(lang==='pt'?'Desbloqueie para revelar esta conquista.':'Unlock to reveal this achievement.'):txt[1],req=secret?'':txt[2];return `<article class="achievement ${isUnlocked?'unlocked':'locked'} ${secret?'secret':''} ${achRecentlyUnlocked.includes(a.id)?'just-unlocked':''}"><div class="ach-medal">${secret?'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 9a2.6 2.6 0 1 1 4.4 1.9c-1.2 1-1.9 1.3-1.9 2.6M12 17h.01"/></svg>':achievementIcon(a)}</div><div class="ach-copy"><h4>${esc(name)}</h4><p>${esc(desc)}</p>${isUnlocked?`<small>${lang==='pt'?'Desbloqueada':'Unlocked'} ✓</small>`:p.unavailable?`<small>${lang==='pt'?'Requer dados que o catálogo atual não fornece':'Requires data not provided by the current catalog'}</small>`:`${req?`<small>${esc(req)}</small>`:''}<div class="ach-mini"><i style="width:${pct}%"></i></div><small>${lang==='pt'?'Progresso':'Progress'}: ${p.value.toLocaleString(lang==='pt'?'pt-BR':'en-US')} / ${p.goal}</small>`}</div></article>`}).join('')}</div></section>`).join('')}
+function applyLanguage(){
+ document.documentElement.lang=lang==="pt"?"pt-BR":"en";
+ document.querySelectorAll("[data-i18n]").forEach(el=>{const key=el.dataset.i18n;if(translations[lang][key])el.textContent=translations[lang][key]});
+ document.querySelectorAll("[data-placeholder]").forEach(el=>el.placeholder=t(el.dataset.placeholder));
+ document.getElementById("langBtn").textContent=lang==="pt"?"PT":"EN";
+ renderStats();renderDex();renderSets();renderBinder();renderAchievements();
+}
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));["dex","sets","achievements","binder"].forEach(v=>{const el=document.getElementById("view-"+v);if(el)el.classList.toggle("hidden",v!==b.dataset.tab)});if(b.dataset.tab==="sets"){activeSet=null;renderSets()}if(b.dataset.tab==="achievements")renderAchievements();if(b.dataset.tab==="binder")renderBinder();renderStats()});
+document.getElementById("langBtn").onclick=()=>{lang=lang==="pt"?"en":"pt";localStorage.setItem("dexfolio_lang",lang);applyLanguage()};
+document.getElementById("dexSearch").oninput=()=>{dexPage=0;renderDex()};document.getElementById("dexFilter").onchange=()=>{dexPage=0;renderDex()};document.getElementById("dexRegion").onchange=()=>{dexPage=0;renderDex()};
+document.getElementById("dexPrev").onclick=()=>{if(dexPage>0){dexPage--;renderDex()}};document.getElementById("dexNext").onclick=()=>{dexPage++;renderDex()};
+document.getElementById("setSearch").oninput=renderSets;document.getElementById("binderSearch").oninput=renderBinder;document.getElementById("binderFilter").onchange=renderBinder;
+document.getElementById("addCardBtn").onclick=()=>openCardModal();
+document.getElementById("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify({state,lang},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="dexfolio-backup.json";a.click();URL.revokeObjectURL(url)};
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+checkAchievements();applyLanguage();
+loadFullDex();loadOfficialSets();
+</script>
+</body></html>
+<style>.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stats .stat{min-width:0}</style>
